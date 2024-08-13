@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local ="clr-namespace:OnionMaui.ViewModel"
+             x:Class="OnionMaui.View.RegistrationPage"
+             BackgroundColor="#0E0E10">
+
+    <Frame Grid.Column="1" Grid.Row="1" Style="{StaticResource frameStyle}" WidthRequest="500" HeightRequest="440">
+        <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="15">
+            <Image Source="logo.png" WidthRequest="250"/>
+
+            <StackLayout Spacing="5">
+                <Label Text="Почта" FontAttributes="Bold"/>
+                <Entry  HorizontalOptions="CenterAndExpand" WidthRequest="444"
+                    x:DataType="local:RegistrationPageViewModel"  Text="{Binding Email}" />
+            </StackLayout>
+
+            <StackLayout Spacing="5">
+                <Label Text="Имя пользователя" FontAttributes="Bold"/>
+                <Entry  HorizontalOptions="CenterAndExpand" WidthRequest="444"
+                x:DataType="local:RegistrationPageViewModel"  Text="{Binding UserName}"/>
+            </StackLayout>
+
+            <StackLayout Spacing="5">
+                <Label Text="Пароль" FontAttributes="Bold"/>
+                <Entry HorizontalOptions="CenterAndExpand" WidthRequest="444"
+                    x:DataType="local:RegistrationPageViewModel" Text="{Binding Password}"/>
+            </StackLayout>
+
+            <Button Text="Зарегистрироваться" x:DataType="local:RegistrationPageViewModel" Command="{Binding RegistrationCommand}" Style="{StaticResource buttonStyle}"/>
+            <Label  x:DataType="local:RegistrationPageViewModel" Text="{Binding Result}" TextColor="Gray"/>
+
+        </StackLayout>
+    </Frame>
+
+</ContentPage>

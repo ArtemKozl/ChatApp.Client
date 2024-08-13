@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="OnionMaui.View.ChatGroupsPage"
+             xmlns:model="clr-namespace:OnionMaui.Model"
+             xmlns:viewmodel ="clr-namespace:OnionMaui.ViewModel"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             BackgroundColor="#0E0E10">
+
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IsVisible="False" IsEnabled="False" />
+    </Shell.BackButtonBehavior>
+
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="65"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="30"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="30"/>
+        </Grid.ColumnDefinitions>
+
+        <HorizontalStackLayout Grid.Row="0" Grid.Column="1">
+            <Image Source="user.png" WidthRequest="40" />
+            <VerticalStackLayout VerticalOptions="Center" Margin="10">
+                <Label x:Name="labelUserName" x:DataType="viewmodel:ChatGrupsPageViewModel" Text="{Binding User.UserName}"/>
+                <HorizontalStackLayout Spacing="5">
+                    <Label Text="Id:" FontSize="12"/>
+                    <Label x:Name="labelUserId" x:DataType="viewmodel:ChatGrupsPageViewModel" Text="{Binding User.Id}" FontSize="12"/>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </HorizontalStackLayout>
+        <HorizontalStackLayout HorizontalOptions="Center" Grid.Row="0" Grid.Column="1" HeightRequest="50" Spacing="15">
+            <Button Text="Удалить" WidthRequest="100" x:DataType="viewmodel:ChatGrupsPageViewModel" Command="{Binding SetTrashImageVisibilityCommand}" HeightRequest="10" Style="{StaticResource buttonStyle}" FontSize="13"/>
+            <Button Text="Добавить" WidthRequest="100" x:DataType="viewmodel:ChatGrupsPageViewModel" Command="{Binding GoToAddChatGroupPageCommand}" HeightRequest="10" Style="{StaticResource buttonStyle}" FontSize="13"/>
+            <Button Text="Обновить" WidthRequest="100" x:DataType="viewmodel:ChatGrupsPageViewModel" Command="{Binding GetGroupsCommand }" HeightRequest="10" Style="{StaticResource buttonStyle}" FontSize="13"/>
+        </HorizontalStackLayout>
+
+        <VerticalStackLayout Grid.Column="1" Grid.Row="1">
+            <BoxView Color="Gray" HeightRequest="1" BackgroundColor="#FFFFFF"/>
+            <HorizontalStackLayout Padding="10" Spacing="5">
+                <Label Text="Приветствуем в" FontSize="17" />
+                <HorizontalStackLayout>
+                    <Label Text="CHAT" FontSize="17" />
+                    <Label Text=".APP!" FontSize="17" TextColor="#00D930"/>
+                </HorizontalStackLayout>
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+        <ContentView x:Name="groupsList" Grid.Column="1" Grid.Row="2">
+            <CollectionView ItemsSource="{Binding Groups}" >
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:Group">
+                        <Grid ColumnSpacing="10" Padding="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="300"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackLayout Grid.Column="0">
+                                <Frame Padding="0"  HeightRequest="100" VerticalOptions="Center" BackgroundColor="#18181B" BorderColor="#00D930">
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ChatGrupsPageViewModel}}, Path=GoToChatPageCommand}"
+                                            CommandParameter="{Binding .}"/>
+                                    </Frame.GestureRecognizers>
+
+                                    <HorizontalStackLayout Spacing="5" Padding="15">
+                                        <Label Text="Группа" FontSize="16" VerticalOptions="Center"/>
+                                        <Label Text="{Binding name}" FontSize="16" TextColor="#00D930" VerticalOptions="Center"/>
+                                    </HorizontalStackLayout>
+                                </Frame>
+                            </StackLayout>
+                            <StackLayout Grid.Column="1">
+                                <Frame Grid.Column="1" BackgroundColor="#18181B" BorderColor="#00D930">
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ChatGrupsPageViewModel}}, Path=GoToChatPageCommand}"
+                                            CommandParameter="{Binding .}"/>
+                                    </Frame.GestureRecognizers>
+                                    <Grid Padding="0">
+                                        <VerticalStackLayout >
+                                            <Label Text="*Последние сообщения" FontSize="12" FontAttributes="Italic" TextColor="Gray"/>
+                                            <Label Text="{Binding userName}"/>
+                                            
+                                            <HorizontalStackLayout Spacing="5">
+                                                <Label Text="{Binding message}" FontSize="13"/>
+                                                <Label Text="·"/>
+                                                <Label Text="{Binding time}" FontSize="13"/>
+                                            </HorizontalStackLayout>
+                                        </VerticalStackLayout>
+                                        <Image Source="trash.png" Grid.Row="0" Grid.Column="1" IsVisible="{Binding CheckBoxVisibility}" WidthRequest="30" HorizontalOptions ="End">
+                                            <Image.GestureRecognizers>
+                                                <TapGestureRecognizer
+                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ChatGrupsPageViewModel}}, Path=DeleteGroupCommand}"
+                                                    CommandParameter="{Binding .}"/>
+                                            </Image.GestureRecognizers>
+                                        </Image>
+                                    </Grid>
+                                </Frame>
+                            </StackLayout>
+                            
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </ContentView>
+    </Grid>
+       
+    
+
+</ContentPage>

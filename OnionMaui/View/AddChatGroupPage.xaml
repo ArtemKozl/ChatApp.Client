@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model="clr-namespace:OnionMaui.Model"
+             xmlns:local="clr-namespace:OnionMaui.ViewModel"
+             xmlns:viewmodel ="clr-namespace:OnionMaui.ViewModel"
+             x:Class="OnionMaui.View.AddChatGroupPage"
+             BackgroundColor="#0E0E10">
+
+    <Frame WidthRequest="500" HeightRequest="505" Style="{StaticResource frameStyle}">
+        <StackLayout Spacing="15">
+            <Label Text="Добавить группу" HorizontalOptions="CenterAndExpand" FontSize="32" FontFamily="Inter" FontAttributes="Bold" Margin="15"/>
+            <VerticalStackLayout Spacing="5" >
+                <Label Text="Название группы" FontAttributes="Bold" />
+                <Entry  VerticalOptions="Center" x:DataType="viewmodel:AddChatGroupPageViewModel" Text="{Binding GroupName}" HorizontalOptions="Center" WidthRequest="460"/>
+            </VerticalStackLayout>
+            <VerticalStackLayout Spacing="5">
+                <Label Text="Добавить участников: "  FontAttributes="Bold"/>
+                <HorizontalStackLayout  Spacing="5">
+                    <Entry x:DataType="viewmodel:AddChatGroupPageViewModel" Text="{Binding Id}" WidthRequest="410"/>
+                    <Button Text="+" x:DataType="viewmodel:AddChatGroupPageViewModel" Command="{Binding AddUserByIdCommand}" FontSize="17" Background="#3D3D40" TextColor="White"/>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="150"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="45"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <ContentView>
+                    <CollectionView ItemsSource="{Binding Users}" ItemsUpdatingScrollMode="KeepScrollOffset">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="model:User">
+                                <Grid Padding="3">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <HorizontalStackLayout Spacing="10" >
+                                        <Frame Padding="0" BackgroundColor="#3D3D40" >
+                                            <Grid Padding="0">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions >
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label Text="{Binding UserName}" FontSize="20" VerticalOptions="Center" Padding="10" TextColor="#FFFFFF" />
+                                            </Grid>
+                                        </Frame>
+                                        <Button Text="---" FontAttributes="Bold" BackgroundColor="#3D3D40" TextColor="#FFFFFF" CharacterSpacing="0"
+                                                x:DataType="local:AddChatGroupPageViewModel" 
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:AddChatGroupPageViewModel}}, Path=DeleteUserCommand}"
+                                                CommandParameter="{Binding .}" />
+                                        
+                                    </HorizontalStackLayout>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </ContentView>
+                <Button Text="Создать" x:DataType="viewmodel:AddChatGroupPageViewModel" Command="{Binding CreateGroupCommand}" 
+                        Style="{StaticResource buttonStyle}" FontFamily="Inter" Grid.Row="2" Grid.Column="0" />
+            </Grid>
+        </StackLayout>
+
+    </Frame>
+</ContentPage>

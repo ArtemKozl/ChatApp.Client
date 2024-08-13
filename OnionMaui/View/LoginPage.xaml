@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:OnionMaui.ViewModel"
+             x:Class="OnionMaui.View.LoginPage"
+             BackgroundColor="#0E0E10">
+
+    <Frame WidthRequest="500" HeightRequest="405" Style="{StaticResource frameStyle}">
+
+        <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="15">
+            <Image Source="logo.png" WidthRequest="250"/>
+
+            <StackLayout Spacing="5">
+                <Label Text="Почта" FontAttributes="Bold"/>
+                <Entry  WidthRequest="444"
+                    x:Name="loginEntry" x:DataType="local:LoginPageViewModel" Text="{Binding Email}"/>
+            </StackLayout>
+            <StackLayout  Spacing="5">
+                <Label Text="Пароль" FontAttributes="Bold"/>
+                <Entry   WidthRequest="444"
+                    x:DataType="local:LoginPageViewModel" Text="{Binding Password}" />
+            </StackLayout>
+
+            <Button Text="Войти" x:DataType="local:LoginPageViewModel" Command="{Binding LoginCommand}" Style="{StaticResource buttonStyle}" FontFamily="Inter"/>
+            <Label x:DataType="local:LoginPageViewModel" Text="{Binding Result}" FontSize="12" TextColor="#FFFFFF"/>
+            <HorizontalStackLayout Spacing="5" HorizontalOptions="Center">
+                <Label Text="У вас нет учетной записи?" TextColor="#FFFFFF" HorizontalOptions="Center" CharacterSpacing = "1" FontSize="12" />
+                <Label Text="Зарегистрируйтесь!" HorizontalOptions="Center" TextDecorations = "Underline" CharacterSpacing = "1" FontSize="12" TextColor="#00D930" FontFamily="Inter">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer x:DataType="local:LoginPageViewModel" Command="{Binding ToRegistrationPageCommand}" NumberOfTapsRequired="1" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </HorizontalStackLayout>
+        </StackLayout>
+    </Frame>
+
+</ContentPage>

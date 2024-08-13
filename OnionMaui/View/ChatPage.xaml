@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model="clr-namespace:OnionMaui.Model"
+             xmlns:viewmodel ="clr-namespace:OnionMaui.ViewModel"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:local="clr-namespace:OnionMaui.ViewModel" 
+             x:Class="OnionMaui.View.ChatPage"
+             BackgroundColor="#0E0E10">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="10"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="10"/>
+        </Grid.RowDefinitions>
+        <HorizontalStackLayout Grid.Column="1" Grid.Row="0" Spacing="10">
+            <Label x:DataType="viewmodel:ChatPageVireModel" Text="{Binding User.ChatRoom}" FontSize="25" VerticalOptions="Center"/>
+        </HorizontalStackLayout>
+        <BoxView BackgroundColor="Gray" HeightRequest="1" Grid.Column="1" Grid.Row="0" VerticalOptions="End"/>
+        <ContentView Grid.Column="1" Grid.Row="1">
+            <CollectionView x:DataType="viewmodel:ChatPageVireModel" ItemsSource="{Binding Messages}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:Message">
+                        <Grid Padding="5">
+                            <Frame HorizontalOptions="{Binding horizontalOptions}" BackgroundColor="{Binding backgroundColor}" Margin="10">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <Label Text="{Binding userName}" HorizontalOptions="{Binding horizontalOptions}" Grid.Row="0" FontAttributes="Bold" FontSize="13" />
+                                    <BoxView HeightRequest="1" BackgroundColor="#FFFFFF" VerticalOptions="End" WidthRequest="200" HorizontalOptions="{Binding horizontalOptions}"/>
+                                    <Label Text="{Binding messageText}" HorizontalOptions="{Binding horizontalOptions}" Grid.Row="1" FontSize="16" FontAttributes="Bold"/>
+                                    <Image Source="{Binding image, Mode=OneWay, Converter={StaticResource ByteArrayToImageSourceConverter}}" 
+                                           Grid.Row="2" HorizontalOptions="{Binding horizontalOptions}" VerticalOptions="StartAndExpand" WidthRequest="300"/>
+                                    <Label Text="{Binding time}" Grid.Row="3" HorizontalOptions="{Binding horizontalOptions}" FontSize="13"/>
+                                </Grid>
+                            </Frame>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </ContentView>
+
+        <Grid Grid.Column="1" Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="110"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="20"/>
+            </Grid.RowDefinitions>
+            <Entry Placeholder="Сообщение..." x:Name="messageEntry" x:DataType="viewmodel:ChatPageVireModel" Text="{Binding MessageEntry}"
+                   ReturnCommand="{Binding SendMessageCommand}" Grid.Column="0" Grid.Row="0"/>
+            <Image Source="send.png" HorizontalOptions="Start" WidthRequest="50" Grid.Column="1" Grid.Row="0" VerticalOptions="Center">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer x:DataType="viewmodel:ChatPageVireModel" Command="{Binding SendMessageCommand}"/>
+                </Image.GestureRecognizers>
+            </Image>
+            <Image Source="imgload.png" Grid.Column="1" Grid.Row="0" HorizontalOptions="End">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer x:DataType="viewmodel:ChatPageVireModel" Command="{Binding PickFileCommand}"/>
+                </Image.GestureRecognizers>
+            </Image>
+            <Label x:DataType="viewmodel:ChatPageVireModel" Text="{Binding ImageLoadNotification}" TextColor="Gray" Grid.Column="0" Grid.Row="1"/>
+        </Grid>
+    </Grid>
+
+</ContentPage>
