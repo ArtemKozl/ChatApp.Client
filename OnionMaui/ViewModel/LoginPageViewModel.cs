@@ -49,7 +49,7 @@ namespace OnionMaui.ViewModel
                 var json = JsonSerializer.Serialize(credentials);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                var response = await Client.PostAsync("https://localhost:7290/Users/login", content);
+                var response = await Client.PostAsync("http://217.114.11.187:5210/Users/login", content);
 
 
                 if (response.IsSuccessStatusCode)
@@ -91,7 +91,7 @@ namespace OnionMaui.ViewModel
 
         public async Task CheckTokens()
         {
-            var response = await Client.GetAsync("https://localhost:7290/Users/GetUserByIdFromCookie");
+            var response = await Client.GetAsync("http://217.114.11.187:5210/Users/GetUserByIdFromCookie");
 
 
             if (response.IsSuccessStatusCode)

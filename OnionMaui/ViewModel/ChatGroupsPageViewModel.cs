@@ -27,13 +27,13 @@ namespace OnionMaui.ViewModel
         public async Task GetGroups()
         {
 
-            await Client.GetAsync("https://localhost:7290/Users/GetUserByIdFromCookie");
+            await Client.GetAsync("http://217.114.11.187:5210/Users/GetUserByIdFromCookie");
 
             try
             {
                 Groups.Clear();
 
-                var response = await Client.GetAsync("https://localhost:7125/ChatGroups/GetGroups");
+                var response = await Client.GetAsync($"http://217.114.11.187:5079/ChatGroups/GetGroups/{User.Id}");
                 if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
@@ -66,7 +66,7 @@ namespace OnionMaui.ViewModel
         public async Task GoToChatPage(Group group)
         {
 
-            await Client.GetAsync("https://localhost:7290/Users/GetUserByIdFromCookie");
+            await Client.GetAsync("http://217.114.11.187:5210/Users/GetUserByIdFromCookie");
 
             try
             {
@@ -118,7 +118,7 @@ namespace OnionMaui.ViewModel
         [RelayCommand]
         public async Task DeleteGroup(Group group)
         {
-            await Client.GetAsync("https://localhost:7290/Users/GetUserByIdFromCookie");
+            await Client.GetAsync("http://217.114.11.187:5210/Users/GetUserByIdFromCookie");
 
             Dictionary<string, string> credentials1 = new()
                     {
@@ -129,14 +129,14 @@ namespace OnionMaui.ViewModel
             var jsonAddGroup = JsonSerializer.Serialize(credentials1);
             var contentAddGroup = new StringContent(jsonAddGroup, Encoding.UTF8, "application/json");
 
-            var response = await Client.PostAsync("https://localhost:7125/ChatGroups/QuitGroup", contentAddGroup);
+            var response = await Client.PostAsync("http://217.114.11.187:5079/ChatGroups/QuitGroup", contentAddGroup);
 
             Groups.Remove(group);
         }
 
         public async Task<LastMessage> GetLastMessage(int groupId)
         {
-            var responseLastMessage = await Client.GetAsync($"https://localhost:7125/Messages/GetLastMessage/{groupId}");
+            var responseLastMessage = await Client.GetAsync($"http://217.114.11.187:5079/Messages/GetLastMessage/{groupId}");
 
             if (responseLastMessage.IsSuccessStatusCode)
             {

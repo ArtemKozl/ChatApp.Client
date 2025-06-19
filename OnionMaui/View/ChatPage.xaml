@@ -48,7 +48,7 @@
                                     <BoxView HeightRequest="1" BackgroundColor="#FFFFFF" VerticalOptions="End" WidthRequest="200" HorizontalOptions="{Binding horizontalOptions}"/>
                                     <Label Text="{Binding messageText}" HorizontalOptions="{Binding horizontalOptions}" Grid.Row="1" FontSize="16" FontAttributes="Bold"/>
                                     <Image Source="{Binding image, Mode=OneWay, Converter={StaticResource ByteArrayToImageSourceConverter}}" 
-                                           Grid.Row="2" HorizontalOptions="{Binding horizontalOptions}" VerticalOptions="StartAndExpand" WidthRequest="300"/>
+                                           Grid.Row="2" HorizontalOptions="{Binding horizontalOptions}" WidthRequest="300"/>
                                     <Label Text="{Binding time}" Grid.Row="3" HorizontalOptions="{Binding horizontalOptions}" FontSize="13"/>
                                 </Grid>
                             </Frame>

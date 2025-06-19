@@ -1,11 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Microsoft.AspNetCore.SignalR.Client;
 using OnionMaui.Model;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using CommunityToolkit.Mvvm.Input;
-using System.Text.Json;
 using System.Globalization;
+using System.Text;
+using System.Text.Json;
 
 namespace OnionMaui.ViewModel
 {
@@ -26,7 +27,7 @@ namespace OnionMaui.ViewModel
         public string horizontalOptions = string.Empty;
 
         [ObservableProperty]
-        public byte[] image ;
+        public byte[] image;
 
         [ObservableProperty]
         private string imageLoadNotification = string.Empty;
@@ -50,7 +51,7 @@ namespace OnionMaui.ViewModel
             if (cookie != null)
             {
                 _hubConnection = new HubConnectionBuilder()
-               .WithUrl("https://localhost:7125/chat", options =>
+               .WithUrl("http://217.114.11.187:5079/chat", options =>
                {
                    options.AccessTokenProvider = () => Task.FromResult(cookie?.Value);
                })
@@ -61,7 +62,7 @@ namespace OnionMaui.ViewModel
 
                 _hubConnection.On<string, string, string>("ReceiveMessage", (userName, time, message) =>
                 {
-                    Client.GetAsync("https://localhost:7290/Users/GetUserByIdFromCookie");
+                    Client.GetAsync("http://217.114.11.187:5210/Users/GetUserByIdFromCookie");
 
                     messageInput.userName = userName;
                     messageInput.time = time;
@@ -87,7 +88,7 @@ namespace OnionMaui.ViewModel
 
                 _hubConnection.On<string, string, byte[]>("ReceiveImage", (userName, time, image) =>
                 {
-                    Client.GetAsync("https://localhost:7290/Users/GetUserByIdFromCookie");
+                    Client.GetAsync("http://217.114.11.187:5210/Users/GetUserByIdFromCookie");
 
                     imageInput.userName = userName;
                     imageInput.time = time;
@@ -147,7 +148,7 @@ namespace OnionMaui.ViewModel
         [RelayCommand]
         public async Task SendMessage()
         {
-            await Client.GetAsync("https://localhost:7290/Users/GetUserByIdFromCookie");
+            await Client.GetAsync("http://217.114.11.187:5210/Users/GetUserByIdFromCookie");
 
             if (_hubConnection == null)
             {
@@ -159,9 +160,10 @@ namespace OnionMaui.ViewModel
             {
                 DateTime now = DateTime.Now;
                 TimeSpan timeSpan = now.TimeOfDay;
+                string imageToSend = Convert.ToBase64String(Image);
 
-                await _hubConnection.SendAsync("SendMessage", User.ChatRoomId, $"{ timeSpan.Hours}:{ timeSpan.Minutes}",
-                MessageEntry, Image);
+                await _hubConnection.SendAsync("SendMessage", User.ChatRoomId, $"{ timeSpan.Hours}:{ timeSpan.Minutes}", 
+                    MessageEntry, Image);
 
                 MessageEntry = string.Empty;
                 Image = Array.Empty<byte>();
@@ -211,7 +213,7 @@ namespace OnionMaui.ViewModel
         {
             await Task.Delay(100);
 
-            var response = await Client.GetAsync($"https://localhost:7125/Messages/GetMessages/{User.ChatRoomId}");
+            var response = await Client.GetAsync($"http://217.114.11.187:5079/Messages/GetMessages/{User.ChatRoomId}");
 
             if (response.IsSuccessStatusCode)
             {

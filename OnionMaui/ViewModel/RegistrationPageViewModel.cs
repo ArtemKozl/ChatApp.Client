@@ -54,7 +54,7 @@ namespace OnionMaui.ViewModel
                 var jsonEmail = JsonSerializer.Serialize(credentialsEmail, SerializerOptions);
                 var contentEmail = new StringContent(jsonEmail, Encoding.UTF8, "application/json");
 
-                var responseEmail = await Client.PostAsync("https://localhost:7290/Users/UserExistByEmail", contentEmail);
+                var responseEmail = await Client.PostAsync("http://217.114.11.187:5210/Users/UserExistByEmail", contentEmail);
 
                 var responseBody = await responseEmail.Content.ReadAsStringAsync();
 
@@ -72,7 +72,7 @@ namespace OnionMaui.ViewModel
                     var json = JsonSerializer.Serialize(credentials, SerializerOptions);
                     var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                    var response = await Client.PostAsync("https://localhost:7290/Users/register", content);
+                    var response = await Client.PostAsync("http://217.114.11.187:5210/Users/register", content);
                     response.EnsureSuccessStatusCode();
 
                     Result = "Пользователь заристрирован";

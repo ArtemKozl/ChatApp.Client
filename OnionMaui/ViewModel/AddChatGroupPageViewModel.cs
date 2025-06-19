@@ -31,7 +31,7 @@ namespace OnionMaui.ViewModel
         [RelayCommand]
         public async Task AddUserById()
         {
-            await Client.GetAsync("https://localhost:7290/Users/GetUserByIdFromCookie");
+            await Client.GetAsync("http://217.114.11.187:5210/Users/GetUserByIdFromCookie");
 
             try
             {
@@ -46,7 +46,7 @@ namespace OnionMaui.ViewModel
 
                 if (User.Id != Convert.ToInt32(Id))
                 {
-                    var response = await Client.GetAsync($"https://localhost:7290/Users/{Id}");
+                    var response = await Client.GetAsync($"http://217.114.11.187:5210/Users/{Id}");
 
                     if (response.IsSuccessStatusCode)
                     {
@@ -65,7 +65,7 @@ namespace OnionMaui.ViewModel
                     else
                     {
                         await Shell.Current.DisplayAlert("Error!",
-                        $"Пользователся с таким id не существует", "OK");
+                        Convert.ToString(response), "OK");
                     }
                 }
                 else
@@ -87,7 +87,7 @@ namespace OnionMaui.ViewModel
         public async Task CreateGroup()
         {
 
-            await Client.GetAsync("https://localhost:7290/Users/GetUserByIdFromCookie");
+            await Client.GetAsync("http://217.114.11.187:5210/Users/GetUserByIdFromCookie");
 
             try
             {
@@ -96,13 +96,13 @@ namespace OnionMaui.ViewModel
                     Dictionary<string, string> credentials1 = new()
                     {
                         {"name", GroupName},
-                        {"id", "0" },
+                        {"id", Convert.ToString(User.Id) },
                     };
 
                     var jsonAddGroup = JsonSerializer.Serialize(credentials1);
                     var contentAddGroup = new StringContent(jsonAddGroup, Encoding.UTF8, "application/json");
 
-                    var response = await Client.PostAsync("https://localhost:7125/ChatGroups/AddGroup", contentAddGroup);
+                    var response = await Client.PostAsync("http://217.114.11.187:5079/ChatGroups/AddGroup", contentAddGroup);
 
                     if (response.IsSuccessStatusCode)
                     {
@@ -116,11 +116,11 @@ namespace OnionMaui.ViewModel
                                     {"userId", Convert.ToString(user.Id)},
                                     {"groupId", groupId },
                                 };
-
+                            
                                 var json = JsonSerializer.Serialize(credentials);
                                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                                await Client.PostAsync("https://localhost:7125/ChatGroups/addUserToGroup", content);
+                                await Client.PostAsync("http://217.114.11.187:5079/ChatGroups/addUserToGroup", content);
                             }
                             Users.Clear();
 
@@ -130,7 +130,7 @@ namespace OnionMaui.ViewModel
                     else
                     {
                         await Shell.Current.DisplayAlert("Error!",
-                        $"Произошла ошибка", "OK");
+                        Convert.ToString(response), "OK");
                     }
                 }
                 else
